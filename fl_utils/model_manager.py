@@ -587,17 +587,23 @@ def _download_demucs_model() -> bool:
     print("[FL SongGen] This is required for style transfer functionality.")
 
     try:
-        # Download from the SongGeneration-Runtime repo which has demucs
-        hf_hub_download(
-            repo_id=CHECKPOINTS_HF_REPO,
-            filename="ckpt/demucs/htdemucs.pth",
-            local_dir=str(get_songgen_models_dir()),
+        # Download from the official tencent/SongGeneration repo
+        # The file is at third_party/demucs/ckpt/htdemucs.pth
+        downloaded_path = hf_hub_download(
+            repo_id="tencent/SongGeneration",
+            filename="third_party/demucs/ckpt/htdemucs.pth",
             local_dir_use_symlinks=False,
         )
+        # Move/copy to the expected location
+        import shutil
+        shutil.copy2(downloaded_path, str(dm_model_path))
         print("[FL SongGen] Demucs model downloaded successfully!")
         return True
     except Exception as e:
         print(f"[FL SongGen] ERROR downloading Demucs model: {e}")
+        print("[FL SongGen] Please manually download htdemucs.pth from:")
+        print("[FL SongGen] https://huggingface.co/tencent/SongGeneration/blob/main/third_party/demucs/ckpt/htdemucs.pth")
+        print(f"[FL SongGen] And place it at: {dm_model_path}")
         return False
 
 

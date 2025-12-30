@@ -13,6 +13,7 @@ from typing import Optional, Tuple, Callable, Any, Dict
 import numpy as np
 import torch
 import torchaudio
+import soundfile as sf
 
 # Get the fl_utils directory (same directory as this file)
 _FL_UTILS_DIR = os.path.dirname(__file__)
@@ -508,19 +509,27 @@ class SongGenWrapper:
             temp_path = f.name
 
         try:
-            torchaudio.save(temp_path, audio.squeeze(0).cpu(), 48000)
+            # Use soundfile instead of torchaudio to avoid TorchCodec issues on Windows
+            audio_np = audio.squeeze(0).cpu().numpy().T  # (channels, samples) -> (samples, channels)
+            sf.write(temp_path, audio_np, 48000)
 
             # Run separation
             with tempfile.TemporaryDirectory() as tmp_dir:
-                output_paths = []
-                for stem in separator.sources:
-                    output_path = os.path.join(tmp_dir, f"temp_{stem}.flac")
-                    output_paths.append(output_path)
-
                 separator.separate(temp_path, tmp_dir, device=torch.device(self.device))
 
-                # Load separated audio
-                vocals, _ = torchaudio.load(os.path.join(tmp_dir, "temp_vocals.flac"))
+                # Get the base name of the temp file (without extension) to find output files
+                # The separator names output as {input_basename}_{stem}.flac
+                # Note: htdemucs uses 'vocal' (singular), not 'vocals'
+                temp_basename = os.path.splitext(os.path.basename(temp_path))[0]
+                vocals_path = os.path.join(tmp_dir, f"{temp_basename}_vocal.flac")
+
+                # Load separated audio using soundfile
+                vocals_np, sr = sf.read(vocals_path)
+                # Convert from (samples, channels) to (channels, samples)
+                if vocals_np.ndim == 1:
+                    vocals = torch.from_numpy(vocals_np).unsqueeze(0).float()
+                else:
+                    vocals = torch.from_numpy(vocals_np.T).float()
                 if vocals.shape[-1] > 48000 * 10:
                     vocals = vocals[..., :48000 * 10]
 

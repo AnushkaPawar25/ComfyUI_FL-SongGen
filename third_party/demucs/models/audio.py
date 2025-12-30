@@ -255,15 +255,25 @@ def save_audio(wav: torch.Tensor,
     if suffix == ".mp3":
         encode_mp3(wav, path, samplerate, bitrate, verbose=True)
     elif suffix == ".wav":
+        # Use soundfile instead of torchaudio to avoid TorchCodec issues on Windows
+        import soundfile as sf
+        # Convert to numpy: soundfile expects (samples, channels) format
+        wav_np = wav.cpu().numpy()
+        if wav_np.ndim == 2:
+            wav_np = wav_np.T  # Convert from (channels, samples) to (samples, channels)
         if as_float:
-            bits_per_sample = 32
-            encoding = 'PCM_F'
+            subtype = 'FLOAT'
         else:
-            encoding = 'PCM_S'
-        ta.save(str(path), wav, sample_rate=samplerate,
-                encoding=encoding, bits_per_sample=bits_per_sample)
+            subtype = 'PCM_16' if bits_per_sample == 16 else f'PCM_{bits_per_sample}'
+        sf.write(str(path), wav_np, samplerate, subtype=subtype)
     elif suffix == ".flac":
-        ta.save(str(path), wav, sample_rate=samplerate, bits_per_sample=bits_per_sample)
+        # Use soundfile for FLAC as well
+        import soundfile as sf
+        wav_np = wav.cpu().numpy()
+        if wav_np.ndim == 2:
+            wav_np = wav_np.T
+        subtype = 'PCM_16' if bits_per_sample == 16 else f'PCM_{bits_per_sample}'
+        sf.write(str(path), wav_np, samplerate, subtype=subtype)
     else:
         raise ValueError(f"Invalid suffix for path: {suffix}")
 
@@ -272,20 +282,28 @@ def load_track(track, audio_channels, samplerate):
     errors = {}
     wav = None
 
+    # Try soundfile first (most reliable on Windows with PyTorch 2.9+)
     try:
-        wav = AudioFile(track).read(
-            streams=0,
-            samplerate=samplerate,
-            channels=audio_channels)
-    except sp.CalledProcessError:
-        errors['ffmpeg'] = 'FFmpeg could not read the file.'
+        import soundfile as sf
+        data, sr = sf.read(str(track))
+        # Convert from (samples, channels) to (channels, samples)
+        if data.ndim == 1:
+            wav = torch.from_numpy(data).unsqueeze(0).float()
+        else:
+            wav = torch.from_numpy(data.T).float()
+        wav = convert_audio(wav, sr, samplerate, audio_channels)
+    except Exception as err:
+        errors['soundfile'] = str(err)
+        wav = None
 
+    # Fallback to ffmpeg if soundfile failed
     if wav is None:
         try:
-            wav, sr = ta.load(str(track))
-        except RuntimeError as err:
-            errors['torchaudio'] = err.args[0]
-        else:
-            wav = convert_audio(wav, sr, samplerate, audio_channels)
+            wav = AudioFile(track).read(
+                streams=0,
+                samplerate=samplerate,
+                channels=audio_channels)
+        except sp.CalledProcessError:
+            errors['ffmpeg'] = 'FFmpeg could not read the file.'
 
     return wav, errors
