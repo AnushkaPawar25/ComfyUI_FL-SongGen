@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Dict, Any, Optional
 
 import torch
+import torch.nn as nn
 from omegaconf import OmegaConf
 
 # Get the fl_utils directory (same directory as this file)
@@ -32,6 +33,7 @@ get_package_root = _paths.get_package_root
 get_auto_prompts_path = _paths.get_auto_prompts_path
 get_demucs_dir = _paths.get_demucs_dir
 get_checkpoints_dir = _paths.get_checkpoints_dir
+get_songgen_models_dir = _paths.get_songgen_models_dir
 check_model_files = _paths.check_model_files
 check_bundled_files = _paths.check_bundled_files
 check_checkpoint_files = _paths.check_checkpoint_files
@@ -119,11 +121,22 @@ def _setup_songgen_imports():
 
 def _register_omegaconf_resolvers():
     """Register OmegaConf resolvers needed for config loading."""
+    package_root = get_package_root()
+
+    def load_yaml_resolver(path: str):
+        """Load YAML file, resolving paths relative to package root."""
+        # If path is relative (like conf/vocab.yaml), resolve from package root
+        if not os.path.isabs(path):
+            resolved_path = os.path.join(package_root, path)
+        else:
+            resolved_path = path
+        return list(OmegaConf.load(resolved_path))
+
     try:
         OmegaConf.register_new_resolver("eval", lambda x: eval(x), replace=True)
         OmegaConf.register_new_resolver("concat", lambda *x: [xxx for xx in x for xxx in xx], replace=True)
         OmegaConf.register_new_resolver("get_fname", lambda: "songgen", replace=True)
-        OmegaConf.register_new_resolver("load_yaml", lambda x: list(OmegaConf.load(x)), replace=True)
+        OmegaConf.register_new_resolver("load_yaml", load_yaml_resolver, replace=True)
     except Exception:
         # Resolvers may already be registered
         pass
@@ -352,6 +365,49 @@ def load_model(
     cfg.mode = 'inference'
     max_duration = cfg.max_dur
 
+    # Resolve relative paths in config to absolute paths
+    # The config uses paths like ./ckpt/... which need to be relative to songgen models dir
+    models_dir = get_songgen_models_dir()
+    bundled_third_party = get_bundled_third_party_path()
+
+    def resolve_path(path_str: str) -> str:
+        """Resolve relative paths in config to absolute paths."""
+        if path_str.startswith('./ckpt/') or path_str.startswith('ckpt/'):
+            # Checkpoint paths: resolve relative to models/songgen/
+            rel_path = path_str.lstrip('./')
+            return str(models_dir / rel_path)
+        elif path_str.startswith('third_party/'):
+            # Third party paths: resolve to bundled third_party
+            rel_path = path_str.replace('third_party/', '')
+            return str(bundled_third_party / rel_path)
+        elif path_str.startswith('./'):
+            # Other relative paths: resolve to models dir
+            return str(models_dir / path_str.lstrip('./'))
+        return path_str
+
+    # Update config paths
+    if hasattr(cfg, 'vae_config'):
+        cfg.vae_config = resolve_path(cfg.vae_config)
+    if hasattr(cfg, 'vae_model'):
+        cfg.vae_model = resolve_path(cfg.vae_model)
+    if hasattr(cfg, 'audio_tokenizer_checkpoint'):
+        # Format: Type_path - only resolve the path part
+        parts = cfg.audio_tokenizer_checkpoint.split('_', 1)
+        if len(parts) == 2:
+            cfg.audio_tokenizer_checkpoint = f"{parts[0]}_{resolve_path(parts[1])}"
+    if hasattr(cfg, 'audio_tokenizer_checkpoint_sep'):
+        parts = cfg.audio_tokenizer_checkpoint_sep.split('_', 1)
+        if len(parts) == 2:
+            cfg.audio_tokenizer_checkpoint_sep = f"{parts[0]}_{resolve_path(parts[1])}"
+
+    # Update conditioner paths
+    if hasattr(cfg, 'conditioners'):
+        for cond_name, cond_cfg in cfg.conditioners.items():
+            if hasattr(cond_cfg, 'QwTokenizer') and hasattr(cond_cfg.QwTokenizer, 'token_path'):
+                cond_cfg.QwTokenizer.token_path = resolve_path(cond_cfg.QwTokenizer.token_path)
+            if hasattr(cond_cfg, 'QwTextTokenizer') and hasattr(cond_cfg.QwTextTokenizer, 'token_path'):
+                cond_cfg.QwTextTokenizer.token_path = resolve_path(cond_cfg.QwTextTokenizer.token_path)
+
     # Import from bundled code
     from codeclm.models import builders, CodecLM
 
@@ -429,6 +485,51 @@ def _load_full_model(
         for k, v in checkpoint.items()
         if k.startswith('audiolm')
     }
+
+    # Resize embedding layers that have size mismatches (due to tokenizer version differences)
+    def get_nested_attr(obj, attr_path):
+        """Get nested attribute from object using dot-separated path."""
+        parts = attr_path.split('.')
+        for part in parts:
+            if hasattr(obj, part):
+                obj = getattr(obj, part)
+            elif hasattr(obj, '_modules') and part in obj._modules:
+                obj = obj._modules[part]
+            else:
+                return None
+        return obj
+
+    def set_nested_attr(obj, attr_path, value):
+        """Set nested attribute on object using dot-separated path."""
+        parts = attr_path.split('.')
+        for part in parts[:-1]:
+            if hasattr(obj, part):
+                obj = getattr(obj, part)
+            elif hasattr(obj, '_modules') and part in obj._modules:
+                obj = obj._modules[part]
+            else:
+                return False
+        setattr(obj, parts[-1], value)
+        return True
+
+    for key, ckpt_tensor in audiolm_state_dict.items():
+        if 'output_proj.weight' in key:
+            # Get the path to the parent module (remove .weight)
+            module_path = key.rsplit('.', 1)[0]
+            current_module = get_nested_attr(audiolm, module_path)
+
+            if current_module is not None and hasattr(current_module, 'weight'):
+                current_size = current_module.weight.shape[0]
+                checkpoint_size = ckpt_tensor.shape[0]
+
+                if current_size != checkpoint_size:
+                    print(f"[FL SongGen] Resizing embedding {module_path}: {current_size} -> {checkpoint_size}")
+                    # Create new embedding with checkpoint size
+                    embed_dim = ckpt_tensor.shape[1]
+                    padding_idx = getattr(current_module, 'padding_idx', None)
+                    new_embedding = nn.Embedding(checkpoint_size, embed_dim, padding_idx=padding_idx)
+                    set_nested_attr(audiolm, module_path, new_embedding)
+
     audiolm.load_state_dict(audiolm_state_dict, strict=False)
     audiolm = audiolm.eval()
 

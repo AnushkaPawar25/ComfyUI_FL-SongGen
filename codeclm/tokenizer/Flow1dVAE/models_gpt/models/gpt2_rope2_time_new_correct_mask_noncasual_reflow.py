@@ -37,7 +37,18 @@ from transformers.modeling_outputs import (
     SequenceClassifierOutputWithPast,
     TokenClassifierOutput,
 )
-from transformers.modeling_utils import PreTrainedModel, SequenceSummary
+from transformers.modeling_utils import PreTrainedModel
+try:
+    from transformers.modeling_utils import SequenceSummary
+except ImportError:
+    # SequenceSummary removed in newer transformers versions
+    # Define a minimal stub - only used by GPT2DoubleHeadsModel (not needed for inference)
+    class SequenceSummary(nn.Module):
+        def __init__(self, config):
+            super().__init__()
+            self.summary = nn.Identity()
+        def forward(self, hidden_states, cls_index=None):
+            return hidden_states[:, -1]
 from transformers.pytorch_utils import Conv1D, find_pruneable_heads_and_indices, prune_conv1d_layer
 from transformers.utils import (
     ModelOutput,
