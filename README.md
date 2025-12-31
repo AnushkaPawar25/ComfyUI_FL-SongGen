@@ -223,7 +223,15 @@ Use a **10-second reference audio** to guide the musical style:
 - Using the **chorus section** of a reference song works best
 - Influences: genre, instrumentation, rhythm, and voice characteristics
 
-> **Important:** Don't provide both reference audio AND text descriptions - choose one or the other. Conflicting information can degrade generation quality.
+### Combining with Descriptions
+
+You can optionally provide a **text description** alongside reference audio to further guide the generation. This can be useful to:
+
+- Specify voice gender when the reference audio is ambiguous
+- Add specific emotions or timbres
+- Set a specific BPM
+
+> **Note:** If the description conflicts with the reference audio style, results may be unpredictable. Use complementary descriptions for best results.
 
 </details>
 

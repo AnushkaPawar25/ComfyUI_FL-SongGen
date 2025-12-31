@@ -70,6 +70,13 @@ class FL_SongGen_StyleTransfer:
                 ),
             },
             "optional": {
+                "description": (
+                    "STRING",
+                    {
+                        "default": "",
+                        "tooltip": "Optional style description to combine with reference audio (e.g., 'female, pop, emotional')"
+                    }
+                ),
                 "duration": (
                     "FLOAT",
                     {
@@ -134,6 +141,7 @@ class FL_SongGen_StyleTransfer:
         model: dict,
         lyrics: str,
         reference_audio: dict,
+        description: str = "",
         duration: float = 60.0,
         temperature: float = 0.9,
         cfg_coef: float = 1.5,
@@ -148,6 +156,7 @@ class FL_SongGen_StyleTransfer:
             model: Loaded model info dict
             lyrics: Formatted lyrics with section tags
             reference_audio: ComfyUI AUDIO dict for style reference
+            description: Optional style description to combine with reference audio
             duration: Target duration in seconds
             temperature: Sampling temperature
             cfg_coef: Classifier-free guidance strength
@@ -167,6 +176,7 @@ class FL_SongGen_StyleTransfer:
         print(f"Top-K: {top_k}")
         print(f"Gen Type: {gen_type}")
         print(f"Seed: {seed}")
+        print(f"Description: {description[:50]}..." if description else "Description: None")
         print(f"Reference Audio: {reference_audio['waveform'].shape}, {reference_audio['sample_rate']}Hz")
         print(f"{'='*60}\n")
 
@@ -205,6 +215,7 @@ class FL_SongGen_StyleTransfer:
         try:
             mixed_audio, vocal_audio, bgm_audio = wrapper.generate(
                 lyrics=lyrics,
+                description=description if description.strip() else None,
                 prompt_audio=prompt_audio,
                 duration=duration,
                 temperature=temperature,
