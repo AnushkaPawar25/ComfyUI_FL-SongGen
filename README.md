@@ -1,19 +1,26 @@
 # FL Song Gen
 
-AI-powered song generation nodes for ComfyUI based on Tencent's SongGeneration (LeVo) model. Generate complete songs with vocals and instrumentals from lyrics!
+AI-powered song generation nodes for ComfyUI based on Tencent's SongGeneration (LeVo) model. Generate complete songs with vocals and instrumentals from lyrics.
 
 [![SongGeneration](https://img.shields.io/badge/SongGeneration-Original%20Repo-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AslpLab/SongGeneration)
 [![Patreon](https://img.shields.io/badge/Patreon-Support%20Me-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/Machinedelusions)
 
+![Workflow Preview](assets/example.png)
+
+---
+
 ## Features
 
-- **Full Song Generation** - Generate complete songs with vocals and instrumentals
-- **Dual-Track Output** - Get separate vocal and background music tracks
+- **Full Song Generation** - Complete songs with vocals and instrumentals
+- **Dual-Track Output** - Separate vocal and background music tracks
 - **Lyrics-to-Song** - Structured lyrics with sections (verse, chorus, bridge, intro, outro)
 - **Style Transfer** - Use reference audio to guide the musical style
 - **Text Descriptions** - Control gender, timbre, genre, emotion, and BPM
 - **Auto Style Presets** - Quick generation with Pop, Rock, Jazz, and more
 - **Long-Form Generation** - Up to 4 minutes 30 seconds per song
+- **Automatic Downloads** - Models download automatically on first use
+
+---
 
 ## Nodes
 
@@ -26,32 +33,45 @@ AI-powered song generation nodes for ComfyUI based on Tencent's SongGeneration (
 | **Style Transfer** | Generate using reference audio for style |
 | **Auto Style** | Generate with preset style prompts |
 
+---
+
 ## Installation
 
-### Prerequisites
+<details>
+<summary><strong>ComfyUI Manager (Recommended)</strong></summary>
 
-1. Clone the SongGeneration repository to your ComfyUI parent directory:
-```bash
-cd /path/to/ComfyUI/..
-git clone https://github.com/AslpLab/SongGeneration.git
-```
+Search for "FL Song Gen" in ComfyUI Manager and install.
 
-2. Download model weights from HuggingFace:
-```bash
-# Download to ComfyUI/models/songgen/songgeneration_base_new/
-# Required files: config.yaml, model.pt
-```
+</details>
 
-### ComfyUI Manager
-Search for "FL Song Gen" and install.
+<details>
+<summary><strong>Manual Installation</strong></summary>
 
-### Manual
 ```bash
 cd ComfyUI/custom_nodes
 git clone https://github.com/filliptm/ComfyUI_FL-SongGen.git
 cd ComfyUI_FL-SongGen
 pip install -r requirements.txt
 ```
+
+</details>
+
+---
+
+## Models
+
+Models download automatically on first use to `ComfyUI/models/songgen/`.
+
+| Model | Max Duration | VRAM | Languages |
+|-------|:------------:|:----:|-----------|
+| `songgeneration_base` | 2m 30s | 10-16 GB | Chinese |
+| `songgeneration_base_new` | 2m 30s | 10-16 GB | Chinese, English |
+| `songgeneration_base_full` | 4m 30s | 12-18 GB | Chinese, English |
+| `songgeneration_large` | 4m 30s | 22-28 GB | Chinese, English |
+
+> **Note:** VRAM range shows low memory mode vs normal mode. Enable `low_mem` in the Model Loader for reduced VRAM usage.
+
+---
 
 ## Quick Start
 
@@ -61,57 +81,198 @@ pip install -r requirements.txt
 4. Connect to **FL Song Gen Generate** node
 5. Connect outputs to audio save/preview nodes
 
-## Models
+---
 
-| Model | Max Duration | VRAM | Languages |
-|-------|-------------|------|-----------|
-| songgeneration_base | 2m30s | 10-16GB | Chinese |
-| songgeneration_base_new | 2m30s | 10-16GB | Chinese, English |
-| songgeneration_base_full | 4m30s | 12-18GB | Chinese, English |
-| songgeneration_large | 4m30s | 22-28GB | Chinese, English |
+## Prompting Guide
 
-Models must be downloaded manually from [HuggingFace](https://huggingface.co/aslp-lab/SongGeneration) to `ComfyUI/models/songgen/`.
+Getting the best results requires understanding how to format lyrics and descriptions properly.
 
-## Lyrics Format
+<details>
+<summary><strong>Lyrics Format</strong></summary>
 
-Lyrics use section tags separated by ` ; ` with phrases separated by `.`:
+### Basic Structure
+
+Lyrics use **section tags** separated by ` ; ` (space-semicolon-space) with **phrases separated by periods** `.`:
 
 ```
-[intro-short] ; [verse] First line.Second line.Third line ; [chorus] Chorus line one.Chorus line two ; [outro-short]
+[intro-short] ; [verse] First line. Second line. Third line ; [chorus] Chorus line one. Chorus line two ; [outro-short]
 ```
 
-**Available Section Tags:**
-- `[intro-short]`, `[intro-medium]`, `[intro-long]` - Instrumental intro
-- `[verse]` - Verse section (requires lyrics)
-- `[chorus]` - Chorus section (requires lyrics)
-- `[bridge]` - Bridge section (requires lyrics)
-- `[inst-short]`, `[inst-medium]`, `[inst-long]` - Instrumental break
-- `[outro-short]`, `[outro-medium]`, `[outro-long]` - Instrumental outro
+### Structure Labels
 
-## Style Descriptions
+**Instrumental sections** (no lyrics):
 
-Format: `"voice_type, timbre, genre, emotion, instruments, the bpm is X"`
+| Tag | Duration | Description |
+|-----|:--------:|-------------|
+| `[intro-short]` | ~0-10s | Short instrumental intro |
+| `[intro-medium]` | ~10-20s | Medium instrumental intro |
+| `[inst-short]` | ~0-10s | Short instrumental break |
+| `[inst-medium]` | ~10-20s | Medium instrumental break |
+| `[outro-short]` | ~0-10s | Short instrumental outro |
+| `[outro-medium]` | ~10-20s | Medium instrumental outro |
 
-Example: `"female, warm, pop, emotional, piano and drums, the bpm is 120"`
+**Lyrical sections** (lyrics required):
 
-## Auto Style Presets
+| Tag | Description |
+|-----|-------------|
+| `[verse]` | Verse - typically tells the story |
+| `[chorus]` | Chorus - the catchy, repeated hook |
+| `[bridge]` | Bridge - contrasting part before final chorus |
 
-- Pop, R&B, Dance, Jazz, Folk, Rock
-- Chinese Style, Chinese Tradition, Chinese Opera
-- Metal, Reggae, Auto
+### Formatting Rules
+
+1. Sections are separated by ` ; ` (with spaces)
+2. Lyrics within sections are separated by periods `.`
+3. Each period represents a phrase/line break
+4. Do NOT add lyrics to instrumental tags
+
+</details>
+
+<details>
+<summary><strong>Complete Song Example</strong></summary>
+
+```
+[intro-short] ; [verse] These faded memories of us. I can't erase the tears you cried before. Unchained this heart to find its way. My peace won't beg you to stay ; [chorus] Like a fool begs for supper. I find myself waiting for her. Only to find the broken pieces of my heart. That was needed for my soul to love again ; [inst-short] ; [verse] Silhouettes where you once stood. Life's rhythm changed its beat for good. Numb to whispers we once knew. My path won't circle back to you ; [chorus] Like a fool begs for supper. I find myself waiting for her. Only to find the broken pieces of my heart. That was needed for my soul to love again ; [outro-short]
+```
+
+</details>
+
+<details>
+<summary><strong>Style Descriptions</strong></summary>
+
+### Format
+
+```
+"gender, timbre, genre, emotion, instruments, the bpm is X"
+```
+
+All dimensions are **optional** and can be combined in any order.
+
+### Available Options
+
+| Dimension | Options |
+|-----------|---------|
+| **Gender** | `male`, `female` |
+| **Timbre** | `dark`, `bright`, `warm`, `soft`, `rock` |
+| **Genre** | `pop`, `rock`, `jazz`, `hip hop`, `R&B`, `folk`, `electronic`, `blues`, `country`, `classical`, `soul`, `reggae`, `k-pop` |
+| **Emotion** | `sad`, `happy`, `emotional`, `angry`, `uplifting`, `romantic`, `melancholic`, `intense` |
+| **Instruments** | See list below |
+| **BPM** | `the bpm is 120` (use this exact phrase format) |
+
+### Common Instrument Combinations
+
+- `piano and drums`
+- `guitar and drums`
+- `synthesizer and piano`
+- `acoustic guitar and piano`
+- `piano and strings`
+- `guitar and synthesizer`
+- `piano and saxophone`
+- `electric guitar and drums`
+- `synthesizer and drums`
+- `acoustic guitar and drums`
+
+### Example Descriptions
+
+```
+female, warm, pop, emotional, piano and drums, the bpm is 120
+```
+
+```
+male, dark, hip hop, sad, synthesizer and drums
+```
+
+```
+female, bright, jazz, romantic, piano and saxophone, the bpm is 90
+```
+
+```
+male, rock, intense, electric guitar and drums, the bpm is 140
+```
+
+</details>
+
+<details>
+<summary><strong>Auto Style Presets</strong></summary>
+
+When using Auto Style mode, select from these presets:
+
+| Preset | Description |
+|--------|-------------|
+| **Pop** | Modern pop music |
+| **R&B** | Rhythm and blues |
+| **Dance** | Electronic dance music |
+| **Jazz** | Jazz style |
+| **Folk** | Folk/acoustic |
+| **Rock** | Rock music |
+| **Chinese Style** | Modern Chinese pop |
+| **Chinese Tradition** | Traditional Chinese music |
+| **Chinese Opera** | Chinese opera style |
+| **Metal** | Heavy metal |
+| **Reggae** | Reggae style |
+| **Auto** | Let the model choose |
+
+</details>
+
+<details>
+<summary><strong>Style Transfer (Reference Audio)</strong></summary>
+
+Use a **10-second reference audio** to guide the musical style:
+
+- Only the **first 10 seconds** of the audio will be used
+- Using the **chorus section** of a reference song works best
+- Influences: genre, instrumentation, rhythm, and voice characteristics
+
+> **Important:** Don't provide both reference audio AND text descriptions - choose one or the other. Conflicting information can degrade generation quality.
+
+</details>
+
+<details>
+<summary><strong>Tips for Better Results</strong></summary>
+
+### Lyrics Tips
+
+- Keep phrases **natural and singable**
+- Use **repetition** strategically, especially in the chorus
+- Match **syllable counts** roughly between verses
+- Use **emotionally evocative** language
+
+### Description Tips
+
+- Use **commas** to separate attributes
+- Stick to **predefined tags** for best results
+- Don't overload with too many conflicting descriptors
+- BPM must use the exact format: `the bpm is X`
+
+### General Tips
+
+- Start with shorter songs to test your prompts
+- The `base_new` model is recommended for English lyrics
+- Enable `low_mem` mode if you're running low on VRAM
+- Instrumental sections help create natural song flow
+
+</details>
+
+---
 
 ## Requirements
 
-- Python 3.10+
-- CUDA 11.8+ (for GPU acceleration)
-- 16GB RAM minimum (32GB+ recommended)
-- NVIDIA GPU with 10-28GB VRAM (depends on model)
+| Requirement | Specification |
+|-------------|---------------|
+| Python | 3.10+ |
+| CUDA | 11.8+ (for GPU acceleration) |
+| RAM | 16 GB minimum (32 GB+ recommended) |
+| VRAM | 10-28 GB (depends on model) |
 
-**Note:** CPU-only mode is supported but very slow. Mac MPS may have limited support.
+> **Note:** CPU-only mode is supported but very slow. Mac MPS may have limited support.
+
+---
 
 ## License
 
 Apache 2.0
+
+---
 
 ## Credits
 
