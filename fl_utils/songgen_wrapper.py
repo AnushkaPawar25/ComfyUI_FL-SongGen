@@ -182,12 +182,10 @@ class SongGenWrapper:
             record_window=50
         )
 
-        # Set progress callback
-        total_steps = int(self.frame_rate * duration)
-
+        # Set progress callback - pass through actual total from model
         def progress_wrapper(current, total):
             if self._progress_callback:
-                self._progress_callback(current, total_steps)
+                self._progress_callback(current, total)
 
         model.set_custom_progress_callback(progress_wrapper)
 
@@ -201,7 +199,7 @@ class SongGenWrapper:
             'melody_is_wav': melody_is_wav,
         }
 
-        # Debug: Log what we're passing to the model
+        # Debug: Log what we're passing to the model (normal mode)
         print(f"\n[FL SongGen DEBUG] ========== GENERATION INPUT ==========")
         print(f"[FL SongGen DEBUG] Lyrics (first 200 chars): {repr(lyrics[:200]) if lyrics else 'None'}")
         print(f"[FL SongGen DEBUG] Description: {repr(description) if description else 'None'}")
@@ -363,12 +361,10 @@ class SongGenWrapper:
             record_window=50
         )
 
-        # Set progress callback
-        total_steps = int(self.frame_rate * duration)
-
+        # Set progress callback - pass through actual total from model
         def progress_wrapper(current, total):
             if self._progress_callback:
-                self._progress_callback(current, total_steps)
+                self._progress_callback(current, total)
 
         model.set_custom_progress_callback(progress_wrapper)
 

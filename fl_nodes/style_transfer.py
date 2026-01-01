@@ -200,12 +200,15 @@ class FL_SongGen_StyleTransfer:
         # Create wrapper and set up progress bar
         wrapper = SongGenWrapper(model)
 
-        frame_rate = 25
-        total_steps = int(frame_rate * duration)
-        pbar = ProgressBar(total_steps)
+        # Progress bar will be created on first callback with actual total
+        pbar_holder = [None]
+        actual_total = [0]
 
         def progress_callback(current, total):
-            pbar.update_absolute(current)
+            if pbar_holder[0] is None:
+                pbar_holder[0] = ProgressBar(total)
+                actual_total[0] = total
+            pbar_holder[0].update_absolute(current)
             if current % 100 == 0:
                 print(f"[FL SongGen] Progress: {current}/{total} tokens")
 
@@ -225,7 +228,8 @@ class FL_SongGen_StyleTransfer:
                 seed=seed,
             )
 
-            pbar.update_absolute(total_steps)
+            if pbar_holder[0] is not None:
+                pbar_holder[0].update_absolute(actual_total[0])
 
             print(f"\n{'='*60}")
             print(f"[FL SongGen Style Transfer] Generation Complete!")

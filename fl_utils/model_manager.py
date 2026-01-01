@@ -86,7 +86,16 @@ MODEL_VARIANTS = {
         "description": "Large model - Best quality, 4m30s max",
         "hf_repo": "lglg666/SongGeneration-large",
         "hf_subfolder": None,
-    }
+    },
+    "songgeneration_v1_5_beta": {
+        "max_duration": 270,
+        "vram_normal": 24,
+        "vram_low": 16,
+        "languages": ["zh", "en", "es", "ja"],
+        "description": "v1.5-beta (Experimental) - Multilingual, 4m30s max, requires 24GB+ VRAM",
+        "hf_repo": "waytan22/SongGeneration-v1.5-beta",
+        "hf_subfolder": None,
+    },
 }
 
 # Checkpoints HuggingFace repo - contains only model weights (no code)
