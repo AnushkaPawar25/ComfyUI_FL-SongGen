@@ -5,6 +5,26 @@ Based on Tencent's SongGeneration (LeVo) model
 Generate complete songs with vocals and instrumentals from lyrics!
 """
 
+# Patch for AMD GPU users and systems without torch.distributed support
+# This must run before any imports that trigger dac/audiotools
+# which access torch.distributed.ReduceOp at import time
+try:
+    import torch.distributed as _dist
+    if not hasattr(_dist, 'ReduceOp'):
+        # Create a dummy ReduceOp class for non-distributed environments
+        class _DummyReduceOp:
+            AVG = None
+            SUM = None
+            PRODUCT = None
+            MIN = None
+            MAX = None
+            BAND = None
+            BOR = None
+            BXOR = None
+        _dist.ReduceOp = _DummyReduceOp
+except ImportError:
+    pass
+
 import sys
 import os
 import warnings
